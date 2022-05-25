@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- displays site properly based on user's device -->
+
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+
+    <title>Frontend Mentor | Expenses chart component</title>
+
+    <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap');
+
+      html,
+      body,
+      div,
+      span,
+      p,
+      a,
+      ul,
+      li,
+      article,
+      footer,
+      header,
+      section {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+      }
+
+      article,
+      aside,
+      details,
+      figcaption,
+      figure,
+      footer,
+      header,
+      hgroup,
+      menu,
+      nav,
+      section {
+        display: block;
+      }
+
+      h1 {
+        margin: 0;
+        line-height: 1;
+        font-size: 1.6rem;
+      }
+
+      ol,
+      ul {
+        list-style: none;
+      }
+
+      :root {
+        --clr-red: rgb(236, 119, 95);
+        --clr-cyan: rgb(118, 181, 188);
+        --clr-dark-brown: rgb(56, 35, 20);
+        --clr-medium-brown: rgb(147, 134, 123);
+        --clr-cream: rgb(248, 233, 221);
+        --clr-pale-orange: rgb(255, 250, 245);
+
+        --br-big: 13px;
+        --br-small: 5px;
+      }
+
+      .text-dark-brown {
+        color: var(--clr-dark-brown);
+      }
+
+      .text-medium-brown {
+        color: var(--clr-medium-brown);
+      }
+
+      body {
+        font-size: 16px;
+        font-family: 'DM Sans', sans-serif;
+        line-height: 1.5;
+        background-color: var(--clr-cream);
+        min-height: 100vh;
+      }
+
+      main {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+      }
+
+      .attribution {
+        text-align: center;
+        padding-block: 1.8rem;
+      }
+
+      .attribution a {
+        color: var(--clr-red);
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .attribution a:hover {
+        text-decoration: underline;
+      }
+
+      .wrapper {
+        width: min(100%, 450px);
+        margin: auto;
+      }
+
+      .wrapper span {
+        font-weight: 700;
+      }
+
+      .chart {
+        padding: 1.7rem 1.3rem;
+        border-radius: var(--br-big);
+      }
+
+      .balance {
+        position: relative;
+        margin-bottom: 1rem;
+        padding: 1.3rem;
+        background-color: var(--clr-red);
+        color: var(--clr-cream);
+        border-radius: var(--br-big);
+      }
+
+      .balance>p>span {
+        font-size: 1.65em;
+        color: var(--clr-pale-orange);
+      }
+
+      .balance::before,
+      .balance::after {
+        content: '';
+        position: absolute;
+        right: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 45px;
+        aspect-ratio: 1;
+        border-radius: 100%;
+        background-color: var(--clr-dark-brown);
+      }
+
+      .balance::after {
+        transform: translate(-50%, -50%);
+        width: 39px;
+        border: 3px solid var(--clr-cream);
+        background-color: transparent;
+
+      }
+
+      .chart {
+        background-color: var(--clr-pale-orange);
+      }
+
+      .chart>header {
+        margin-bottom: 1.5rem;
+      }
+
+      .week {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        align-items: end;
+        gap: 1rem;
+        text-align: center;
+        min-height: 280px;
+        font-size: 0.9em;
+      }
+
+      .day {
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        height: 85%;
+      }
+
+      .bar {
+        position: relative;
+        width: 100%;
+        margin-bottom: 0.75rem;
+        border-radius: var(--br-small);
+        background-color: var(--clr-red);
+        cursor: pointer;
+        transition: filter 0.2s ease-out;
+      }
+
+      .bar.max-amount {
+        background-color: var(--clr-cyan);
+      }
+
+      .bar::before {
+        content: attr(data-tooltip);
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translate(-50%, -90%);
+        padding: 0.3em;
+        border-radius: var(--br-small);
+
+        color: var(--clr-pale-orange);
+        background-color: var(--clr-dark-brown);
+
+        opacity: 0;
+        transition: all 0.2s ease-out;
+      }
+
+      .bar:hover {
+        filter: brightness(1.2)
+      }
+
+      .bar:hover::before {
+        opacity: 1;
+        transform: translate(-50%, -120%);
+      }
+
+      .chart>footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 2px solid var(--clr-cream);
+      }
+
+      .percentage {
+        float: right;
+      }
+
+      .total>span {
+        font-size: 2.2em;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <section class="wrapper">
+        <header class="balance">
+          <p>My balance</br><span>$921.48</span></p>
+        </header>
+        <article class="chart">
+          <header>
+            <h1 class="text-dark-brown">Spending - Last 7 days</h1>
+          </header>
+          <ul class="week text-medium-brown">
+          </ul>
+          <footer>
+            <p class="text-medium-brown total">
+              Total this week
+              </br>
+              <span class="text-dark-brown" id="totalAmount"></span>
+            </p>
+            <p class="text-medium-brown">
+              <span class="text-dark-brown percentage">+2.4%</span>
+              </br>
+              from last week
+            </p>
+          </footer>
+        </article>
+      </section>
+      <footer class="attribution">
+        Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
+        Coded by <a href="https://www.linkedin.com/in/pablodevs/" target="_blank">pablodevs</a>.
+      </footer>
+    </main>
+
+    <script type="module" src="app.js"></script>
+  </body>
+
+</html>
